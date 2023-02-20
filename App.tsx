@@ -29,6 +29,24 @@ type SectionProps = PropsWithChildren<{
   title: string;
 }>;
 
+const todos = [
+  {
+    id: 0,
+    title: 'Walk the dog',
+    complete: false,
+  },
+  {
+    id: 1,
+    title: 'Pet the cat',
+    complete: false,
+  },
+  {
+    id: 2,
+    title: 'Water the plants',
+    complete: false,
+  },
+];
+
 function Section({children, title}: SectionProps): JSX.Element {
   const isDarkMode = useColorScheme() === 'dark';
   return (
@@ -76,7 +94,7 @@ function App(): JSX.Element {
           style={{
             backgroundColor: isDarkMode ? Colors.black : Colors.white,
           }}>
-          <Section title="Step One">
+          <Section title="Hey look! We did something!">
             Edit <Text style={styles.highlight}>App.tsx</Text> to change this
             screen and then come back to see your edits.
           </Section>
