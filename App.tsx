@@ -10,6 +10,7 @@ import React from 'react';
 import {
   SafeAreaView,
   FlatList,
+  TextInput,
   StatusBar,
   StyleSheet,
   Text,
@@ -36,7 +37,7 @@ const todos = [
 
 const Item = function (item) {
   const linethrough = {
-    textDecorationLine: item.complete ? 'line-through' : 'None',
+    textDecorationLine: item.complete ? 'line-through' : 'none',
   };
   return (
     <View style={styles.item}>
@@ -44,15 +45,41 @@ const Item = function (item) {
     </View>
   );
 };
+
+const toggleCompletion = () =>
+{
+  
+}
+
 function App(): JSX.Element {
+  const [toDos, setToDos] = React.useState(todos);
+  const [text, onChangeText] = React.useState('Useless Text');
+  const addToDo = (event) => {
+
+const newToDo = {
+  id: toDos.length,
+    title: event.nativeEvent.text,
+    complete: false,
+}
+
+    setToDos([...toDos,newToDo])
+    onChangeText('')
+
+  }
   return (
     <SafeAreaView style={styles.container}>
+      <TextInput
+        style={styles.input}
+        onChangeText={onChangeText}
+        value={text}
+        onSubmitEditing={addToDo}
+      />
       <FlatList
-        data={todos}
-        renderItem={({item}) => (
+        data={toDos}
+        renderItem={({ item }) => (
           <Item title={item.title} complete={item.complete} />
         )}
-        // keyExtractor = {item => item.id}
+      // keyExtractor = {item => item.id}
       />
     </SafeAreaView>
   );
@@ -71,6 +98,12 @@ const styles = StyleSheet.create({
   },
   title: {
     fontSize: 32,
+  },
+  input: {
+    height: 40,
+    margin: 12,
+    borderWidth: 1,
+    padding: 10,
   },
 });
 
