@@ -8,6 +8,7 @@
 
 import React from 'react';
 import {
+  Alert,
   SafeAreaView,
   FlatList,
   TextInput,
@@ -15,6 +16,7 @@ import {
   StyleSheet,
   Text,
   View,
+  Pressable,
 } from 'react-native';
 
 const todos = [
@@ -34,38 +36,46 @@ const todos = [
     complete: false,
   },
 ];
-
+/*
+  {
+    title: "",
+    complete: false
+  }  
+*/
 const Item = function (item) {
   const linethrough = {
     textDecorationLine: item.complete ? 'line-through' : 'none',
   };
+  console.log(item.title);
   return (
     <View style={styles.item}>
-      <Text style={[styles.title, linethrough]}>{item.title}</Text>
+      <Pressable
+        onPress={() => {
+          Alert.alert('You tapped the button!');
+        }}>
+        <Text style={[styles.title, linethrough]}>{item.title}</Text>
+      </Pressable>
     </View>
   );
 };
 
-const toggleCompletion = () =>
-{
-  
-}
+const toggleCompletion = item => {
+  item.complete = !item.complete;
+};
 
 function App(): JSX.Element {
   const [toDos, setToDos] = React.useState(todos);
   const [text, onChangeText] = React.useState('Useless Text');
-  const addToDo = (event) => {
+  const addToDo = event => {
+    const newToDo = {
+      id: toDos.length,
+      title: event.nativeEvent.text,
+      complete: false,
+    };
 
-const newToDo = {
-  id: toDos.length,
-    title: event.nativeEvent.text,
-    complete: false,
-}
-
-    setToDos([...toDos,newToDo])
-    onChangeText('')
-
-  }
+    setToDos([...toDos, newToDo]);
+    onChangeText('');
+  };
   return (
     <SafeAreaView style={styles.container}>
       <TextInput
@@ -76,10 +86,10 @@ const newToDo = {
       />
       <FlatList
         data={toDos}
-        renderItem={({ item }) => (
-          <Item title={item.title} complete={item.complete} />
+        renderItem={({item}) => (
+          <Item id={item.id} title={item.title} complete={item.complete} />
         )}
-      // keyExtractor = {item => item.id}
+        // keyExtractor = {item => item.id}
       />
     </SafeAreaView>
   );
