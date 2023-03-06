@@ -36,36 +36,23 @@ const todos = [
     complete: false,
   },
 ];
-/*
-  {
-    title: "",
-    complete: false
-  }  
-*/
+
 const Item = function (item) {
   const linethrough = {
     textDecorationLine: item.complete ? 'line-through' : 'none',
   };
-  console.log(item.title);
+  // console.log(item.id);
   return (
     <View style={styles.item}>
-      <Pressable
-        onPress={() => {
-          Alert.alert('You tapped the button!');
-        }}>
-        <Text style={[styles.title, linethrough]}>{item.title}</Text>
-      </Pressable>
+
+      <Text style={[styles.title, linethrough]}>{item.title}</Text>
     </View>
   );
 };
 
-const toggleCompletion = item => {
-  item.complete = !item.complete;
-};
-
 function App(): JSX.Element {
   const [toDos, setToDos] = React.useState(todos);
-  const [text, onChangeText] = React.useState('Useless Text');
+  const [text, onChangeText] = React.useState('Add your TOodly-DOoldy');
   const addToDo = event => {
     const newToDo = {
       id: toDos.length,
@@ -76,6 +63,7 @@ function App(): JSX.Element {
     setToDos([...toDos, newToDo]);
     onChangeText('');
   };
+
   return (
     <SafeAreaView style={styles.container}>
       <TextInput
@@ -86,12 +74,31 @@ function App(): JSX.Element {
       />
       <FlatList
         data={toDos}
-        renderItem={({item}) => (
-          <Item id={item.id} title={item.title} complete={item.complete} />
-        )}
-        // keyExtractor = {item => item.id}
+        renderItem={({ item }) => (
+          <Pressable
+            onPress={() => {
+              const stateCopy = toDos;
+              const alertMessage = item.title + ' completition status updated to ' + !item.complete
+              stateCopy[item.id].complete = !item.complete;
+              setToDos([...stateCopy])
+              Alert.alert(alertMessage);
+
+            }}
+            onLongPress={() => {
+              const stateCopy = toDos;
+              const alertMessage = item.title + ' has been deleted'
+              stateCopy.splice(item.id, 1)
+              setToDos([...stateCopy])
+              Alert.alert(alertMessage);
+
+            }}>
+            <Item id={item.id} title={item.title} complete={item.complete} />
+          </Pressable>
+        )
+        }
+      // keyExtractor = {item => item.id}
       />
-    </SafeAreaView>
+    </SafeAreaView >
   );
 }
 
